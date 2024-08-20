@@ -23,18 +23,30 @@ namespace Intranet.Services.AuthService.Controller
 
 
         [HttpGet]
-        public Object Get()
+        [Route("{id:int}")]
+        public IActionResult Get(int id)
         {
             try
             {
-                IEnumerable<User> obList = _db.Users.ToList();
-                return obList;
+                // Retrieve the user by their UserId
+                User user = _db.Users.FirstOrDefault(u => u.UserId == id);
+
+                // Check if the user is null
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                // Return the user object
+                return Ok(user);
             }
             catch (Exception ex)
             {
+                // Return an internal server error if something goes wrong
                 return StatusCode(500, "Internal server error");
             }
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDTO registerRequestDto)
