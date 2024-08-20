@@ -21,6 +21,21 @@ namespace Intranet.Services.AuthService.Controller
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
+        [HttpGet]
+        public object Get()
+        {
+            try
+            {
+                IEnumerable<User> obList = _db.Users.ToList();
+                return obList;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
 
         [HttpGet]
         [Route("{id:int}")]
